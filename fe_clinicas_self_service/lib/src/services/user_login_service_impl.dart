@@ -19,7 +19,7 @@ class UserLoginServiceImpl implements IUserLoginService {
         return Left(ServiceEx(message: 'Usuário ou senha inválidos'));
       case Right(value: final accessToken):
         final sp = await SharedPreferences.getInstance();
-        sp.setString(LocalStorageConsts.acessToken, accessToken);
+        sp.setString(LocalStorageConsts.accessToken, accessToken);
         return Right(unit);
     }
   }

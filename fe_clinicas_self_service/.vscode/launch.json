@@ -11,7 +11,9 @@
             "args": [
                 "--dart-define-from-file",
                 ".config/env.json"
-            ]
+            ],
+        
+            
         },
         {
             "name": "fe_clinicas_self_service (profile mode)",

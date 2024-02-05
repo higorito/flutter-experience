@@ -11,12 +11,73 @@
             "id": "48c9cf80-b0ae-1e95-b71e-8f52afb83246",
             "email": "adm@gmail.com",
             "password": "adm123"
+        },
+        {
+            "id": "1777c180-1d60-1e9a-b988-77877a53d42e",
+            "email": "adm2@gmail.com",
+            "password": "adm123"
         }
     ],
-    "attendantDeskAssignment": [],
-    "patients": [],
-    "patientInformationForm": [],
-    "painelCheckin": [],
+    "attendantDeskAssignment": [
+        {
+            "id": "05a0f0fb-6202-420a-8644-a1c1772c9da6123",
+            "user_id": "UUID_XXXXXXXXXXXXXXXdsadad",
+            "desk_number": "123A",
+            "date_created": "",
+            "status": "Available | In Service"
+        }
+    ],
+    "patients": [
+        {
+            "id": "UUID_XXXXXXX_XXXX",
+            "name": "Rodrigo Rahman",
+            "email": "rodrigorahman@academiadoflutter.com.br",
+            "phone_number": "(11) 1231212312",
+            "document": "123.123.123-12",
+            "address": {
+                "cep": "09190390",
+                "street_address": "Rua X",
+                "number": "51",
+                "address_complement": "casa",
+                "state": "SP",
+                "city": "Santo André",
+                "district": "Jardins"
+            },
+            "guardian": "",
+            "guardian_identification_number": ""
+        }
+    ],
+    "patientInformationForm": [
+        {
+            "patient_information_form_id": "UUI_patient_information_form",
+            "patient_id": "UUID_PATIENT",
+            "health_insurance_card": "path_file",
+            "medical_order": [
+                "path_file",
+                "path_file"
+            ],
+            "password": "",
+            "date_created": "",
+            "date_modified": "",
+            "status_old": "Waiting | Checked In | Being Attended ",
+            "tests": [
+                {
+                    "id": "UUID_XXXXX",
+                    "test_id": "UUID do Exame ref table: (tests)",
+                    "medical_crm": "CRM do médico",
+                    "medical_name": "Nome do médico"
+                }
+            ]
+        }
+    ],
+    "painelCheckin": [
+        {
+            "id": "UUID_XXXXXX",
+            "password": "Rodrigo Rahman",
+            "time_called": "",
+            "attendant_desk": "Número do Guichê"
+        }
+    ],
     "tests": [
         {
             "id": "3b2526a7-96ad-4884-8d89-aac3a8f8d1e1",

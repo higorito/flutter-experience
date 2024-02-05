@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:fe_clinicas_core/fe_clinicas_core.dart';
 import 'package:fe_clinicas_self_service/src/binding/clinicas_apps_binding.dart';
 import 'package:fe_clinicas_self_service/src/modules/auth/auth_module.dart';
+import 'package:fe_clinicas_self_service/src/modules/autoAtendimento/self_service_module.dart';
 import 'package:fe_clinicas_self_service/src/modules/home/home_module.dart';
 import 'package:fe_clinicas_self_service/src/pages/splashPage/splash_page.dart';
 import 'package:flutter/material.dart';
@@ -33,6 +34,7 @@ class ClinicasSelfServiceApp extends StatelessWidget {
       modules: [
         AuthModule(),
         HomeModule(),
+        SelfServiceModule(),
       ],
     );
   }

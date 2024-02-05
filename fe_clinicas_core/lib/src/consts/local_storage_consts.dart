@@ -1,3 +1,3 @@
 sealed class LocalStorageConsts {
-  static const acessToken = 'ACESS_TOKEN_KEY';
+  static const accessToken = 'ACCESS_TOKEN_KEY';
 }

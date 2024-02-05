@@ -27,6 +27,7 @@ final class ClinicasTheme {
         color: blueColor,
         fontWeight: FontWeight.w600,
       ),
+      border: _inputPadrao,
       enabledBorder: _inputPadrao,
       focusedBorder: _inputPadrao,
       errorBorder: _inputPadrao.copyWith(
@@ -40,6 +41,21 @@ final class ClinicasTheme {
           borderRadius: BorderRadius.circular(16),
         ),
         foregroundColor: Colors.white,
+        textStyle: const TextStyle(
+          fontSize: 15,
+          fontWeight: FontWeight.w700,
+          fontFamily: 'Montserrat',
+        ),
+      ),
+    ),
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: OutlinedButton.styleFrom(
+        backgroundColor: Colors.white,
+        side: const BorderSide(color: blueColor),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        foregroundColor: blueColor,
         textStyle: const TextStyle(
           fontSize: 15,
           fontWeight: FontWeight.w700,

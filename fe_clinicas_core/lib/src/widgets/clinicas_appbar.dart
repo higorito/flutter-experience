@@ -19,7 +19,7 @@ class ClinicasAppbar extends AppBar {
               ],
             ),
             child: Padding(
-              padding: const EdgeInsets.only(left: 32.0),
+              padding: const EdgeInsets.only(left: 60.0),
               child: Image.asset('assets/images/logo_horizontal.png'),
             ),
           ),

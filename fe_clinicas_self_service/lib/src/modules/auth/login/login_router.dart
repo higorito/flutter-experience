@@ -17,5 +17,5 @@ class LoginRouter extends FlutterGetItModulePageRouter {
       ];
 
   @override
-  WidgetBuilder get view => (_) => LoginPage();
+  WidgetBuilder get view => (_) => const LoginPage();
 }

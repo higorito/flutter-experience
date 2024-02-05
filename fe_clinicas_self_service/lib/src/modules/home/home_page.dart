@@ -63,7 +63,9 @@ class HomePage extends StatelessWidget {
                 width: size.width * 0.8,
                 height: size.height * 0.045,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).pushReplacementNamed('/self-service');
+                  },
                   child: const Text('INICIAR ATENDIMENTO'),
                 ),
               ),

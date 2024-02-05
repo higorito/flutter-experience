@@ -19,7 +19,7 @@ final class AuthInterceptor extends Interceptor {
       //vamos usar o shared preferences p persistir o token de autenticação
       final sp = await SharedPreferences.getInstance();
       headers.addAll({
-        authHeaderKey: 'Bearer ${sp.getString(LocalStorageConsts.acessToken)}',
+        authHeaderKey: 'Bearer ${sp.getString(LocalStorageConsts.accessToken)}',
       });
     }
     handler.next(options);
