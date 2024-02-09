@@ -30,7 +30,7 @@ class InformationFormRepositoryImpl implements IInformationFormRepository {
         'medical_order': pedidoMedicoDoc,
         'password': '$nome $sobrenome',
         'date_created': DateTime.now().toIso8601String(),
-        'status': 'WAITING',
+        'status': 'Waiting',
         'tests': [],
       });
       return Right(unit);

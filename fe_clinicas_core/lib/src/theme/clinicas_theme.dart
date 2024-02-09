@@ -84,4 +84,10 @@ final class ClinicasTheme {
     fontSize: 18,
     fontWeight: FontWeight.w700,
   );
+
+  static const subtitleSmallStyle = TextStyle(
+    color: blueColor,
+    fontSize: 18,
+    fontWeight: FontWeight.w500,
+  );
 }
