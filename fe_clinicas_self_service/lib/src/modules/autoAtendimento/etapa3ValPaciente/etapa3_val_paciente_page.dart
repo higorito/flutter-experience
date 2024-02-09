@@ -2,11 +2,13 @@ import 'package:brasil_fields/brasil_fields.dart';
 import 'package:fe_clinicas_core/fe_clinicas_core.dart';
 import 'package:fe_clinicas_self_service/src/model/self_service_model.dart';
 import 'package:fe_clinicas_self_service/src/modules/autoAtendimento/etapa3ValPaciente/val_patiente_form_controller.dart';
+import 'package:fe_clinicas_self_service/src/modules/autoAtendimento/etapa3ValPaciente/valpatiente_controller.dart';
 import 'package:fe_clinicas_self_service/src/modules/autoAtendimento/self_service_controller.dart';
 import 'package:fe_clinicas_self_service/src/modules/autoAtendimento/widgets/clinica_self_service_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_getit/flutter_getit.dart';
+import 'package:signals_flutter/signals_flutter.dart';
 import 'package:validatorless/validatorless.dart';
 
 class Etapa3ValPacientePage extends StatefulWidget {
@@ -17,7 +19,7 @@ class Etapa3ValPacientePage extends StatefulWidget {
 }
 
 class _Etapa3ValPacientePageState extends State<Etapa3ValPacientePage>
-    with PatienteFormController {
+    with PatienteFormController, MessagesViewMixin {
   //puxou o mixin PatienteFormController com os textEditingController
 
   final formKey = GlobalKey<FormState>();
@@ -25,18 +27,29 @@ class _Etapa3ValPacientePageState extends State<Etapa3ValPacientePage>
   final selfServiceController = Injector.get<SelfServiceController>();
 
   late bool patienteFound;
-  late bool formEdit;
+  late bool enableForm;
+
+  final ValPatienteController controller =
+      Injector.get<ValPatienteController>();
 
   @override
   void initState() {
+    messageListener(controller);
+
     final SelfServiceModel(:patiente) =
         selfServiceController.model; //serve para pegar o paciente
 
     patienteFound = patiente != null;
 
     //se o paciente for encontrado, o form não pode ser editado
-    formEdit = !patienteFound;
+    enableForm = !patienteFound;
     initializeForm(patiente);
+
+    effect(() {
+      if (controller.nextStep) {
+        selfServiceController.updatePatienteAndGoDocument(controller.patiente);
+      }
+    });
 
     super.initState();
   }
@@ -69,21 +82,42 @@ class _Etapa3ValPacientePageState extends State<Etapa3ValPacientePage>
               key: formKey,
               child: Column(
                 children: [
-                  Image.asset('assets/images/check_icon.png'),
-                  const SizedBox(height: 16),
-                  const Text(
-                    'Cadastro Encontrado!',
-                    style: ClinicasTheme.titleSmallStyle,
-                    textAlign: TextAlign.center,
+                  Visibility(
+                    visible: patienteFound,
+                    replacement: Image.asset('assets/images/lupa_icon.png'),
+                    child: Image.asset('assets/images/check_icon.png'),
                   ),
                   const SizedBox(height: 16),
-                  const Text(
-                    'Confirme os dados cadastrados',
-                    style: ClinicasTheme.subtitleStyle,
-                    textAlign: TextAlign.center,
+                  Visibility(
+                    visible: patienteFound,
+                    replacement: const Text(
+                      'Cadastro não encontrado!',
+                      style: ClinicasTheme.titleSmallStyle,
+                      textAlign: TextAlign.center,
+                    ),
+                    child: const Text(
+                      'Cadastro Encontrado!',
+                      style: ClinicasTheme.titleSmallStyle,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Visibility(
+                    visible: patienteFound,
+                    replacement: const Text(
+                      'Preencha os campos abaixo para continuar',
+                      style: ClinicasTheme.subtitleStyle,
+                      textAlign: TextAlign.center,
+                    ),
+                    child: const Text(
+                      'Confirme os dados cadastrados',
+                      style: ClinicasTheme.subtitleStyle,
+                      textAlign: TextAlign.center,
+                    ),
                   ),
                   const SizedBox(height: 22),
                   TextFormField(
+                    readOnly: !enableForm,
                     controller: nameEC,
                     validator: Validatorless.required('Nome do Paciente'),
                     decoration: const InputDecoration(
@@ -93,6 +127,7 @@ class _Etapa3ValPacientePageState extends State<Etapa3ValPacientePage>
                   ),
                   const SizedBox(height: 16),
                   TextFormField(
+                    readOnly: !enableForm,
                     controller: emailEC,
                     validator: Validatorless.multiple(
                       [
@@ -107,6 +142,7 @@ class _Etapa3ValPacientePageState extends State<Etapa3ValPacientePage>
                   ),
                   const SizedBox(height: 16),
                   TextFormField(
+                    readOnly: !enableForm,
                     controller: phoneEC,
                     validator: Validatorless.required('Telefone obrigatório'),
                     inputFormatters: [
@@ -120,6 +156,7 @@ class _Etapa3ValPacientePageState extends State<Etapa3ValPacientePage>
                   ),
                   const SizedBox(height: 16),
                   TextFormField(
+                    readOnly: !enableForm,
                     controller: documentEC,
                     inputFormatters: [
                       FilteringTextInputFormatter.digitsOnly,
@@ -133,6 +170,7 @@ class _Etapa3ValPacientePageState extends State<Etapa3ValPacientePage>
                   ),
                   const SizedBox(height: 16),
                   TextFormField(
+                    readOnly: !enableForm,
                     controller: cepEC,
                     validator: Validatorless.required('CEP obrigatório'),
                     inputFormatters: [
@@ -150,6 +188,7 @@ class _Etapa3ValPacientePageState extends State<Etapa3ValPacientePage>
                       Flexible(
                         flex: 3,
                         child: TextFormField(
+                          readOnly: !enableForm,
                           controller: streetEC,
                           validator:
                               Validatorless.required('Endereço obrigatório'),
@@ -162,6 +201,7 @@ class _Etapa3ValPacientePageState extends State<Etapa3ValPacientePage>
                       const SizedBox(width: 12),
                       Flexible(
                         child: TextFormField(
+                          readOnly: !enableForm,
                           controller: numberEC,
                           validator:
                               Validatorless.required('Número obrigatório'),
@@ -178,6 +218,7 @@ class _Etapa3ValPacientePageState extends State<Etapa3ValPacientePage>
                     children: [
                       Flexible(
                         child: TextFormField(
+                          readOnly: !enableForm,
                           controller: complementEC,
                           decoration: const InputDecoration(
                             labelText: 'Complemento',
@@ -188,6 +229,7 @@ class _Etapa3ValPacientePageState extends State<Etapa3ValPacientePage>
                       const SizedBox(width: 12),
                       Flexible(
                         child: TextFormField(
+                          readOnly: !enableForm,
                           controller: stateEC,
                           validator: Validatorless.required('UF obrigatório'),
                           decoration: const InputDecoration(
@@ -203,6 +245,7 @@ class _Etapa3ValPacientePageState extends State<Etapa3ValPacientePage>
                     children: [
                       Flexible(
                         child: TextFormField(
+                          readOnly: !enableForm,
                           controller: cityEC,
                           validator:
                               Validatorless.required('Cidade obrigatório'),
@@ -215,6 +258,7 @@ class _Etapa3ValPacientePageState extends State<Etapa3ValPacientePage>
                       const SizedBox(width: 12),
                       Flexible(
                         child: TextFormField(
+                          readOnly: !enableForm,
                           controller: districtEC,
                           validator:
                               Validatorless.required('Bairro obrigatório'),
@@ -228,6 +272,7 @@ class _Etapa3ValPacientePageState extends State<Etapa3ValPacientePage>
                   ),
                   const SizedBox(height: 16),
                   TextFormField(
+                    readOnly: !enableForm,
                     controller: guardianEC,
                     decoration: const InputDecoration(
                       labelText: 'Responsável Legal',
@@ -236,6 +281,7 @@ class _Etapa3ValPacientePageState extends State<Etapa3ValPacientePage>
                   ),
                   const SizedBox(height: 16),
                   TextFormField(
+                    readOnly: !enableForm,
                     controller: guardianIdentificationNumberEC,
                     inputFormatters: [
                       FilteringTextInputFormatter.digitsOnly,
@@ -247,25 +293,69 @@ class _Etapa3ValPacientePageState extends State<Etapa3ValPacientePage>
                     ),
                   ),
                   const SizedBox(height: 32),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: SizedBox(
-                          height: 48,
-                          child: OutlinedButton(
-                              onPressed: () {}, child: const Text('EDITAR')),
+                  Visibility(
+                    visible: !enableForm,
+                    replacement: SizedBox(
+                      width: double.infinity,
+                      height: 48,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          final formValid =
+                              formKey.currentState?.validate() ?? false;
+                          if (formValid) {
+                            if (patienteFound) {
+                              controller.updateAndNext(
+                                updatePatiente(
+                                    selfServiceController.model.patiente!),
+                              );
+                            } else {
+                              controller
+                                  .registerAndNext(createPatienteRegister());
+                            }
+                          }
+                        },
+                        child: Visibility(
+                          visible: !patienteFound,
+                          replacement:
+                              const Text('SALVAR ALTERAÇÕES E CONTINUAR'),
+                          child: const Text('CADASTRAR'),
                         ),
                       ),
-                      const SizedBox(width: 18),
-                      Expanded(
-                        child: SizedBox(
-                          height: 48,
-                          child: ElevatedButton(
-                              onPressed: () {}, child: const Text('CONTINUAR')),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: SizedBox(
+                            height: 48,
+                            child: OutlinedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    enableForm = true;
+                                  });
+                                },
+                                child: const Text('EDITAR')),
+                          ),
                         ),
-                      ),
-                    ],
+                        const SizedBox(width: 18),
+                        Expanded(
+                          child: SizedBox(
+                            height: 48,
+                            child: ElevatedButton(
+                                onPressed: () {
+                                  final formValid =
+                                      formKey.currentState?.validate() ?? false;
+                                  if (formValid) {
+                                    controller.patiente =
+                                        selfServiceController.model.patiente;
+                                    controller.goNextStep();
+                                  }
+                                },
+                                child: const Text('CONTINUAR')),
+                          ),
+                        ),
+                      ],
+                    ),
                   )
                 ],
               ),

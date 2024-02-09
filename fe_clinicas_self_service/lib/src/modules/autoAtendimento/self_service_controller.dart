@@ -33,6 +33,8 @@ class SelfServiceController with MessagesStateMixin {
     _step.forceUpdate(FormSteps.paciente);
   }
 
+  //VALIDAÇÃO PACIENTE
+
   void clearForm() {
     _model = _model.clear();
   }
@@ -48,5 +50,35 @@ class SelfServiceController with MessagesStateMixin {
   void restartProcess() {
     _step.forceUpdate(FormSteps.restart);
     clearForm();
+  }
+
+  void updatePatienteAndGoDocument(PatienteModel? patiente) {
+    _model = _model.copyWith(
+      patiente: () => patiente,
+    );
+
+    _step.forceUpdate(FormSteps.documentos);
+  }
+
+  //DOCUMENTOS
+
+  void registerDocument(DocumentType type, String filePath) {
+    final documents = _model.documents ?? {};
+    if (type == DocumentType.carteirinha) {
+      documents[type]?.clear();
+    }
+
+    final values = documents[type] ?? [];
+    values.add(filePath);
+    documents[type] = values;
+    _model = _model.copyWith(
+      documents: () => documents,
+    );
+  }
+
+  void clearDocuments() {
+    _model = _model.copyWith(
+      documents: () => {},
+    );
   }
 }

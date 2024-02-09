@@ -12,7 +12,7 @@ PatientsAddressModel _$PatientsAddressModelFromJson(
       cep: json['cep'] as String,
       number: json['number'] as String,
       complement: json['address_complement'] as String? ?? '',
-      streetAddress: json['street_address'] as String,
+      streetAddress: json['street_address'] as String? ?? '',
       state: json['state'] as String,
       city: json['city'] as String,
       district: json['district'] as String,

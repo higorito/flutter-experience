@@ -10,9 +10,16 @@ import 'package:fe_clinicas_self_service/src/pages/splashPage/splash_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_getit/flutter_getit.dart';
 
+import 'package:camera/camera.dart';
+
+late List<CameraDescription> _cameras;
+
 void main() {
-  runZonedGuarded(() {
+  runZonedGuarded(() async {
+    WidgetsFlutterBinding
+        .ensureInitialized(); //garante que o flutter esteja inicializado
     runApp(const ClinicasSelfServiceApp());
+    _cameras = await availableCameras();
   }, (error, stack) {
     log('ERROR NAO TRATADO', error: error, stackTrace: stack);
     throw error;
@@ -36,6 +43,17 @@ class ClinicasSelfServiceApp extends StatelessWidget {
         HomeModule(),
         SelfServiceModule(),
       ],
+
+      //é como passar algo para o bind q vai ser injetado no getit
+      //algumas coisas n da, ai usa esse metodo
+      didStart: () {
+        //ja adicionou o getit e os registers dele
+        //ai agora vamos criar as cameras
+        FlutterGetItBindingRegister.registerPermanentBinding(
+          'CAMERAS',
+          [Bind.lazySingleton((i) => _cameras)],
+        );
+      },
     );
   }
 }

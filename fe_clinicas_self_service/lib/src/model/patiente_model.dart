@@ -33,4 +33,27 @@ class PatienteModel {
       _$PatienteModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$PatienteModelToJson(this);
+
+  PatienteModel copyWith({
+    String? id,
+    String? name,
+    String? email,
+    String? phoneNumber,
+    String? document,
+    PatientsAddressModel? address,
+    String? guardian,
+    String? guardianIdentificationNumber,
+  }) {
+    return PatienteModel(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      email: email ?? this.email,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
+      document: document ?? this.document,
+      address: address ?? this.address,
+      guardian: guardian ?? this.guardian,
+      guardianIdentificationNumber:
+          guardianIdentificationNumber ?? this.guardianIdentificationNumber,
+    );
+  }
 }

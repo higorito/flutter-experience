@@ -12,6 +12,7 @@ class ClinicasCoreConfig extends StatelessWidget {
     this.pagesBuilders,
     this.modules,
     required this.title,
+    this.didStart,
   });
 
   final ApplicationBindings?
@@ -27,6 +28,9 @@ class ClinicasCoreConfig extends StatelessWidget {
 
   final String title;
 
+  final VoidCallback?
+      didStart; //camera e outras coisas que precisam ser inicializadas antes de iniciar o app
+
   @override
   Widget build(BuildContext context) {
     return FlutterGetIt(
@@ -41,6 +45,9 @@ class ClinicasCoreConfig extends StatelessWidget {
           //ai vamos usar pq tem o loading customizado
           loader: ClinicasLoader(),
           builder: (navigatorObserver) {
+            if (didStart != null) {
+              didStart!();
+            }
             return MaterialApp(
               debugShowCheckedModeBanner: false,
               theme: ClinicasTheme.lightTheme,

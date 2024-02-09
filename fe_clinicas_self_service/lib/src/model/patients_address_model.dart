@@ -15,7 +15,7 @@ class PatientsAddressModel {
   });
 
   final String cep;
-  @JsonKey(name: 'street_address')
+  @JsonKey(name: 'street_address', defaultValue: '')
   final String streetAddress;
   final String number;
   @JsonKey(name: 'address_complement', defaultValue: '')
@@ -30,4 +30,24 @@ class PatientsAddressModel {
       _$PatientsAddressModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$PatientsAddressModelToJson(this);
+
+  PatientsAddressModel copyWith({
+    String? cep,
+    String? streetAddress,
+    String? number,
+    String? complement,
+    String? state,
+    String? city,
+    String? district,
+  }) {
+    return PatientsAddressModel(
+      cep: cep ?? this.cep,
+      streetAddress: streetAddress ?? this.streetAddress,
+      number: number ?? this.number,
+      complement: complement ?? this.complement,
+      state: state ?? this.state,
+      city: city ?? this.city,
+      district: district ?? this.district,
+    );
+  }
 }
