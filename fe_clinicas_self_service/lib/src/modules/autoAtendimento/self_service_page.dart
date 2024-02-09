@@ -37,6 +37,11 @@ class _SelfServicePageState extends State<SelfServicePage>
           case FormSteps.documentos:
             baseRoute += 'etapa4DocumentosPage';
           case FormSteps.done:
+            // Navigator.of(context).pushNamedAndRemoveUntil(
+            //   '/self-service/done',
+            //   ModalRoute.withName('/self-service'),
+            //   arguments: controller.password,
+            // );
             baseRoute += 'donePage';
           case FormSteps.restart:
             Navigator.of(context)

@@ -51,7 +51,7 @@ final class ClinicasTheme {
     outlinedButtonTheme: OutlinedButtonThemeData(
       style: OutlinedButton.styleFrom(
         backgroundColor: Colors.white,
-        side: const BorderSide(color: blueColor),
+        side: const BorderSide(color: blueColor, width: 3),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
         ),

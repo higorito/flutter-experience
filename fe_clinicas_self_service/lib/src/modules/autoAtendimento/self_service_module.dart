@@ -10,6 +10,8 @@ import 'package:fe_clinicas_self_service/src/modules/autoAtendimento/etapa4_docu
 import 'package:fe_clinicas_self_service/src/modules/autoAtendimento/etapa4_documentos/scanConfirm/documents_scan_confirm_router.dart';
 import 'package:fe_clinicas_self_service/src/modules/autoAtendimento/self_service_controller.dart';
 import 'package:fe_clinicas_self_service/src/modules/autoAtendimento/self_service_page.dart';
+import 'package:fe_clinicas_self_service/src/repositories/information_form/information_form_repository.dart';
+import 'package:fe_clinicas_self_service/src/repositories/information_form/information_form_repository_impl.dart';
 import 'package:fe_clinicas_self_service/src/repositories/patients/patient_repository.dart';
 import 'package:fe_clinicas_self_service/src/repositories/patients/patient_repository_impl.dart';
 import 'package:flutter/material.dart';
@@ -18,8 +20,11 @@ import 'package:flutter_getit/flutter_getit.dart';
 class SelfServiceModule extends FlutterGetItModule {
   @override
   List<Bind<Object>> get bindings => [
+        Bind.lazySingleton<IInformationFormRepository>(
+            (i) => InformationFormRepositoryImpl(restClient: i())),
         //tudo vai ter acesso a esse controller
-        Bind.lazySingleton((_) => SelfServiceController()),
+        Bind.lazySingleton(
+            (i) => SelfServiceController(informationFormRepository: i())),
         //como o PatienteRepositoryImpl vai ser usado em mais de um lugar subi ele de nivel
         Bind.lazySingleton<IPatientRepository>(
             (i) => PatienteRepositoryImpl(restClient: i())),
@@ -38,6 +43,6 @@ class SelfServiceModule extends FlutterGetItModule {
         '/etapa4DocumentosPage/scan': (context) => const DocumentosScanPage(),
         '/etapa4DocumentosPage/scan/confirm': (context) =>
             const DocumentsScanConfirmRouter(),
-        '/donePage': (context) => const DonePage(),
+        '/donePage': (context) => DonePage(),
       };
 }
