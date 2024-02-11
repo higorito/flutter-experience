@@ -11,7 +11,7 @@ class CheckinRouter extends FlutterGetItPageRouter {
   @override
   List<Bind<Object>> get bindings => [
         Bind.lazySingleton(
-          (i) => CheckinController(),
+          (i) => CheckinController(patientInformationFormRepository: i()),
         ),
       ];
 

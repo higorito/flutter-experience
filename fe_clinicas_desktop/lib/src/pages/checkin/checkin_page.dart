@@ -21,6 +21,11 @@ class _CheckinPageState extends State<CheckinPage> with MessagesViewMixin {
   @override
   void initState() {
     messageListener(controller);
+    effect(() {
+      if (controller.endProcess()) {
+        Navigator.of(context).pushReplacementNamed('/end-checkin');
+      }
+    });
     super.initState();
   }
 
@@ -28,8 +33,12 @@ class _CheckinPageState extends State<CheckinPage> with MessagesViewMixin {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
-    final PatienteInformationFormModel(:password, :patient) =
-        controller.informationForm.watch(context)!;
+    final PatienteInformationFormModel(
+      :password,
+      :patient,
+      :medicalOrder,
+      :healthInsuranceCard
+    ) = controller.informationForm.watch(context)!;
 
     return Scaffold(
       appBar: ClinicasAppbar(),
@@ -155,20 +164,25 @@ class _CheckinPageState extends State<CheckinPage> with MessagesViewMixin {
                 const SizedBox(
                   height: 20,
                 ),
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     CheckinImageLink(
                       label: 'Carteirinha',
+                      image: healthInsuranceCard,
                     ),
                     Column(
                       children: [
                         CheckinImageLink(
                           label: 'Pedido Médico',
+                          image: medicalOrder,
                         ),
-                        CheckinImageLink(
-                          label: 'Pedido Médico',
-                        ),
+                        //se eu tivesse uma lista de pedidos médicos poderia ser feito assim:
+                        // for(final(index, medicalOrder) in medicalOrder.indexed ) //esse indexed é de lista
+                        //   CheckinImageLink(
+                        //     label: 'Pedido Médico ${index + 1}',
+                        //     image: medicalOrder,
+                        //   ),
                       ],
                     ),
                   ],
@@ -181,8 +195,7 @@ class _CheckinPageState extends State<CheckinPage> with MessagesViewMixin {
                   height: 48,
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.of(context).pushReplacementNamed('/checkin',
-                          arguments: controller.informationForm);
+                      controller.endChekin();
                     },
                     child: const Text('FINALIZAR ATENDIMENTO'),
                   ),
