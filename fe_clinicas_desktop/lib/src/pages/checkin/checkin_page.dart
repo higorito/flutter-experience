@@ -1,26 +1,26 @@
 import 'package:fe_clinicas_core/fe_clinicas_core.dart';
-import 'package:fe_clinicas_desktop/src/models/patiente_information_form_model.dart';
-import 'package:fe_clinicas_desktop/src/pages/pre_checkin/pre_chekin_controller.dart';
-import 'package:fe_clinicas_desktop/src/shared/data_item.dart';
+import 'package:fe_clinicas_desktop/src/pages/checkin/checkin_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_getit/flutter_getit.dart';
 import 'package:signals_flutter/signals_flutter.dart';
 
-class PreCheckinPage extends StatefulWidget {
-  const PreCheckinPage({super.key});
+import '../../models/patiente_information_form_model.dart';
+import '../../shared/data_item.dart';
+import 'widgets/checkin_image_link.dart';
+
+class CheckinPage extends StatefulWidget {
+  const CheckinPage({super.key});
 
   @override
-  State<PreCheckinPage> createState() => _PreCheckinPageState();
+  State<CheckinPage> createState() => _CheckinPageState();
 }
 
-class _PreCheckinPageState extends State<PreCheckinPage>
-    with MessagesViewMixin {
-  final controller = Injector.get<PreChekinController>();
+class _CheckinPageState extends State<CheckinPage> with MessagesViewMixin {
+  final controller = Injector.get<CheckinController>();
 
   @override
   void initState() {
     messageListener(controller);
-    //ai nessa tela n vai ter efeito, vai buildar assim que o signal mudar
     super.initState();
   }
 
@@ -30,7 +30,6 @@ class _PreCheckinPageState extends State<PreCheckinPage>
 
     final PatienteInformationFormModel(:password, :patient) =
         controller.informationForm.watch(context)!;
-    //inves de usar o signal.value, usa o watch pq ai ja vai atualizar a tela, fica escutando
 
     return Scaffold(
       appBar: ClinicasAppbar(),
@@ -38,7 +37,7 @@ class _PreCheckinPageState extends State<PreCheckinPage>
         child: Align(
           alignment: Alignment.topCenter,
           child: Container(
-            width: size.width * 0.5,
+            width: MediaQuery.sizeOf(context).width * 0.5,
             margin: const EdgeInsets.only(top: 45),
             padding: const EdgeInsets.all(40),
             decoration: BoxDecoration(
@@ -76,6 +75,24 @@ class _PreCheckinPageState extends State<PreCheckinPage>
                   ),
                 ),
                 const SizedBox(height: 46),
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: ClinicasTheme.lightOrange,
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Text(
+                    'Cadastro ',
+                    style: ClinicasTheme.subtitleSmallStyle.copyWith(
+                      color: ClinicasTheme.orangeColor,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 22,
+                ),
                 DataItem(
                   label: 'Nome do Paciente',
                   value: patient.name,
@@ -118,36 +135,57 @@ class _PreCheckinPageState extends State<PreCheckinPage>
                   padding: const EdgeInsets.only(bottom: 15),
                 ),
                 const SizedBox(
-                  height: 46,
+                  height: 22,
                 ),
-                Row(
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: ClinicasTheme.lightOrange,
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Text(
+                    'Validar Carteitinha e Pedidos Médicos',
+                    style: ClinicasTheme.subtitleSmallStyle.copyWith(
+                      color: ClinicasTheme.orangeColor,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Expanded(
-                      child: OutlinedButton(
-                        style: OutlinedButton.styleFrom(
-                            fixedSize: const Size.fromHeight(48)),
-                        onPressed: () {
-                          controller.next();
-                          //TEM UM ERRO AQUI, chama o proximo, mas ai o outro n chama
-                        },
-                        child: const Text('CHAMAR PRÓXIMO'),
-                      ),
+                    CheckinImageLink(
+                      label: 'Carteirinha',
                     ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    Expanded(
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            fixedSize: const Size.fromHeight(48)),
-                        onPressed: () {
-                          Navigator.of(context).pushReplacementNamed('/checkin',
-                              arguments: controller.informationForm.value);
-                        },
-                        child: const Text('ATENDER'),
-                      ),
+                    Column(
+                      children: [
+                        CheckinImageLink(
+                          label: 'Pedido Médico',
+                        ),
+                        CheckinImageLink(
+                          label: 'Pedido Médico',
+                        ),
+                      ],
                     ),
                   ],
+                ),
+                const SizedBox(
+                  height: 32,
+                ),
+                SizedBox(
+                  width: double.infinity,
+                  height: 48,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pushReplacementNamed('/checkin',
+                          arguments: controller.informationForm);
+                    },
+                    child: const Text('FINALIZAR ATENDIMENTO'),
+                  ),
                 ),
               ],
             ),

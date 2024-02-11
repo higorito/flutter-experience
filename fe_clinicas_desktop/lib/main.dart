@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:fe_clinicas_core/fe_clinicas_core.dart';
 import 'package:fe_clinicas_desktop/src/bindings/clinica_app_binding.dart';
+import 'package:fe_clinicas_desktop/src/pages/checkin/checkin_router.dart';
 import 'package:fe_clinicas_desktop/src/pages/home/home_router.dart';
 import 'package:fe_clinicas_desktop/src/pages/login/login_router.dart';
 import 'package:fe_clinicas_desktop/src/pages/splash/splash_page.dart';
@@ -40,6 +41,7 @@ class ClinicasAdm extends StatelessWidget {
         LoginRouter(),
         HomeRouter(),
         PreCheckinRouter(),
+        CheckinRouter(),
       ],
     );
   }

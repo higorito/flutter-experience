@@ -25,6 +25,7 @@ class _HomePageState extends State<HomePage> with MessagesViewMixin {
     effect(() {
       if (controller.informationForm != null) {
         //provavelmente o erro ta antes de informationForm
+        print('PACIENTE CARREGADO!!!');
         Navigator.of(context).pushReplacementNamed(
           '/pre-checkin',
           arguments: controller.informationForm,

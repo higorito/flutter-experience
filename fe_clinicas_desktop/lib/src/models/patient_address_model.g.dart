@@ -9,7 +9,7 @@ part of 'patient_address_model.dart';
 PatientAddressModel _$PatientAddressModelFromJson(Map<String, dynamic> json) =>
     PatientAddressModel(
       cep: json['cep'] as String? ?? '',
-      streetAddress: json['streetAddress'] as String,
+      streetAddress: json['street_address'] as String,
       number: json['number'] as String,
       addressComplement: json['address_complement'] as String,
       state: json['state'] as String,
@@ -21,7 +21,7 @@ Map<String, dynamic> _$PatientAddressModelToJson(
         PatientAddressModel instance) =>
     <String, dynamic>{
       'cep': instance.cep,
-      'streetAddress': instance.streetAddress,
+      'street_address': instance.streetAddress,
       'number': instance.number,
       'address_complement': instance.addressComplement,
       'state': instance.state,

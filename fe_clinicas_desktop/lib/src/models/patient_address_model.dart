@@ -16,6 +16,7 @@ class PatientAddressModel {
 
   @JsonKey(name: 'cep', defaultValue: '')
   String cep;
+  @JsonKey(name: 'street_address')
   String streetAddress;
   String number;
   @JsonKey(name: 'address_complement')

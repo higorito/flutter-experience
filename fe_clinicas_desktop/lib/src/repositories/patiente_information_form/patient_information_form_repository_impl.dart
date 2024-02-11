@@ -17,7 +17,7 @@ class PatientInformationFormRepositoryImpl
   Future<Either<RepositoryEx, PatienteInformationFormModel?>>
       callNextToCheckIn() async {
     final Response(:List data) =
-        await restClient.auth.get('/patienteInformationForm', queryParameters: {
+        await restClient.auth.get('/patientInformationForm', queryParameters: {
       'status': PatienteInformationFormStatus.waiting.id,
       'page': 1,
       'limit': 1,
@@ -41,14 +41,14 @@ class PatientInformationFormRepositoryImpl
         formData['status'] = PatienteInformationFormStatus
             .checkIn.id; //aqui ele atualiza o status do paciente
 
-        formData['patients'] = await _getPatientData(formData['patient_id']);
+        formData['patient'] = await _getPatientData(formData['patient_id']);
         //aqui ele pega os dados do paciente a partir do id dele
         return Right(PatienteInformationFormModel.fromJson(formData));
     }
   }
 
   Future<Map<String, dynamic>> _getPatientData(String id) async {
-    final Response(:data) = await restClient.auth.get('/patient/$id');
+    final Response(:data) = await restClient.auth.get('/patients/$id');
 
     return data;
   }
@@ -58,7 +58,7 @@ class PatientInformationFormRepositoryImpl
       String id, PatienteInformationFormStatus status) async {
     try {
       await restClient.auth.put(
-        '/patienteInformationForm/$id',
+        '/patientInformationForm/$id',
         data: {
           'status': status.id,
         },

@@ -30,7 +30,7 @@ class PatienteInformationFormModel {
   @JsonKey(name: 'health_insurance_card')
   final String healthInsuranceCard;
   @JsonKey(name: 'medical_order')
-  final List<String> medicalOrder;
+  final String medicalOrder;
   final String password;
   @JsonKey(name: 'date_created')
   final DateTime dateCreated;

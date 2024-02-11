@@ -22,8 +22,7 @@ class HomeController with MessagesStateMixin {
 
   Future<void> startService(int deskNumber) async {
     asyncstate.AsyncState.show();
-    final result =
-        await _deskAssignmentRepository.startService(deskNumber).asyncLoader();
+    final result = await _deskAssignmentRepository.startService(deskNumber);
 
     switch (result) {
       case Left():

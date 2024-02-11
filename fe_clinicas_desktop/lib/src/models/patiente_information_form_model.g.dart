@@ -12,9 +12,7 @@ PatienteInformationFormModel _$PatienteInformationFormModelFromJson(
       id: json['id'] as String,
       patient: PatienteModel.fromJson(json['patient'] as Map<String, dynamic>),
       healthInsuranceCard: json['health_insurance_card'] as String,
-      medicalOrder: (json['medical_order'] as List<dynamic>)
-          .map((e) => e as String)
-          .toList(),
+      medicalOrder: json['medical_order'] as String,
       password: json['password'] as String,
       dateCreated: DateTime.parse(json['date_created'] as String),
       status:
