@@ -21,7 +21,7 @@ class UserRepositoryImpl implements IUserRepository {
         data: {
           'email': email,
           'password': password,
-          'adm': true,
+          'admin': true,
         },
       );
       return Right(access_token);

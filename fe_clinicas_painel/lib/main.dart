@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_getit/flutter_getit.dart';
 
 import 'src/bindings/clinica_app_binding.dart';
+import 'src/pages/painel/painel_router.dart';
 import 'src/pages/splash/splash_page.dart';
 
 void main() {
@@ -33,6 +34,7 @@ class ClinicasPainelApp extends StatelessWidget {
       ],
       pages: const [
         LoginRouter(),
+        PainelRouter(),
       ],
     );
   }

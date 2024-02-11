@@ -29,7 +29,7 @@ class _LoginPageState extends State<LoginPage> with MessagesViewMixin {
     effect(() {
       //fica ouvindo o signal
       if (controller.logado) {
-        Navigator.of(context).pushReplacementNamed('/home');
+        Navigator.of(context).pushReplacementNamed('/painel');
       }
     });
     super.initState();

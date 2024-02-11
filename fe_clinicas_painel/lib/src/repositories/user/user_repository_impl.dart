@@ -22,7 +22,7 @@ class UserRepositoryImpl implements IUserRepository {
         data: {
           'email': email,
           'password': password,
-          // 'adm': true, /outra area do sistema
+          'admin': true,
         },
       );
       return Right(access_token);
