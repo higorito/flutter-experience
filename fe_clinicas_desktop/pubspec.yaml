@@ -48,7 +48,7 @@ dependencies:
   shared_preferences: ^2.2.2
   json_annotation: ^4.8.1
   brasil_fields: ^1.14.2
-  camera: ^0.10.5+9
+  
 
 
   # The following adds the Cupertino Icons font to your application.
