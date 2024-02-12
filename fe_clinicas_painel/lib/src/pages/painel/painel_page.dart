@@ -1,14 +1,55 @@
 import 'package:fe_clinicas_core/fe_clinicas_core.dart';
+import 'package:fe_clinicas_painel/src/models/painel_checkin_model.dart';
+import 'package:fe_clinicas_painel/src/pages/painel/painel_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_getit/flutter_getit.dart';
+import 'package:signals_flutter/signals_flutter.dart';
 
 import 'widgets/painel_principal_widget.dart';
 import 'widgets/password_tile_widget.dart';
 
-class PainelPage extends StatelessWidget {
+class PainelPage extends StatefulWidget {
   const PainelPage({super.key});
 
   @override
+  State<PainelPage> createState() => _PainelPageState();
+}
+
+class _PainelPageState extends State<PainelPage> {
+  final controller = Injector.get<PainelCotroller>();
+
+  @override
+  void initState() {
+    controller.listenerPainel();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final PainelCheckinModel? current;
+    final PainelCheckinModel? lastCall;
+    final List<PainelCheckinModel> others;
+
+    final listPainel = controller.painelData.watch(context);
+
+    current = listPainel.firstOrNull;
+    if (listPainel.isNotEmpty) {
+      listPainel.removeAt(0);
+    }
+
+    lastCall = listPainel.firstOrNull;
+    if (listPainel.isNotEmpty) {
+      listPainel.removeAt(0);
+    }
+
+    others = listPainel;
+
     return Scaffold(
       appBar: ClinicasAppbar(),
       body: SingleChildScrollView(
@@ -20,35 +61,41 @@ class PainelPage extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(
-                  width: MediaQuery.sizeOf(context).width * 0.4,
-                  child: PainelPrincipalWidget(
-                    passwordLabel: 'Senha Anterior',
-                    password: '1234',
-                    deskNumber: '1',
-                    labelColor: ClinicasTheme.blueColor,
-                    btnColor: ClinicasTheme.orangeColor,
-                  ),
-                ),
+                lastCall != null
+                    ? SizedBox(
+                        width: MediaQuery.sizeOf(context).width * 0.4,
+                        child: PainelPrincipalWidget(
+                          passwordLabel: 'Senha Anterior',
+                          password: lastCall.password,
+                          deskNumber:
+                              lastCall.attendantDesk.toString().padLeft(2, '0'),
+                          labelColor: ClinicasTheme.blueColor,
+                          btnColor: ClinicasTheme.orangeColor,
+                        ),
+                      )
+                    : const SizedBox.shrink(),
                 const SizedBox(
                   width: 22,
                 ),
-                SizedBox(
-                  width: MediaQuery.sizeOf(context).width * 0.4,
-                  child: PainelPrincipalWidget(
-                    passwordLabel: 'Senha Atual',
-                    password: '1234',
-                    deskNumber: '2',
-                    labelColor: ClinicasTheme.orangeColor,
-                    btnColor: ClinicasTheme.blueColor,
-                  ),
-                ),
+                current != null
+                    ? SizedBox(
+                        width: MediaQuery.sizeOf(context).width * 0.4,
+                        child: PainelPrincipalWidget(
+                          passwordLabel: 'Senha Atual',
+                          password: current.password,
+                          deskNumber:
+                              current.attendantDesk.toString().padLeft(2, '0'),
+                          labelColor: ClinicasTheme.orangeColor,
+                          btnColor: ClinicasTheme.blueColor,
+                        ),
+                      )
+                    : const SizedBox.shrink(),
               ],
             ),
             const SizedBox(
               height: 28,
             ),
-            Divider(
+            const Divider(
               color: ClinicasTheme.orangeColor,
               thickness: 1,
             ),
@@ -62,15 +109,18 @@ class PainelPage extends StatelessWidget {
             const SizedBox(
               height: 16,
             ),
-            const Wrap(
+            Wrap(
               runAlignment: WrapAlignment.center,
               spacing: 10,
               runSpacing: 10,
-              children: [
-                PasswordTileWidget(),
-                PasswordTileWidget(),
-                PasswordTileWidget(),
-              ],
+              children: others
+                  .map(
+                    (p) => PasswordTileWidget(
+                      password: p.password,
+                      deskNumber: p.attendantDesk.toString(),
+                    ),
+                  )
+                  .toList(),
             )
           ],
         ),

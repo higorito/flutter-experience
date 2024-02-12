@@ -2,7 +2,14 @@ import 'package:fe_clinicas_core/fe_clinicas_core.dart';
 import 'package:flutter/material.dart';
 
 class PasswordTileWidget extends StatelessWidget {
-  const PasswordTileWidget({super.key});
+  const PasswordTileWidget({
+    super.key,
+    required this.password,
+    required this.deskNumber,
+  });
+
+  final String password;
+  final String deskNumber;
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +23,7 @@ class PasswordTileWidget extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            'Senha Anterior',
+            password,
             style: const TextStyle(
               color: ClinicasTheme.blueColor,
               fontSize: 22,
@@ -24,7 +31,7 @@ class PasswordTileWidget extends StatelessWidget {
             ),
           ),
           Text(
-            'Guichê 1',
+            'Guichê $deskNumber',
             style: const TextStyle(
                 fontSize: 18,
                 color: ClinicasTheme.orangeColor,
